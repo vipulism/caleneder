@@ -2,6 +2,8 @@
 <html ng-app="calendarDemoApp">
 <head lang="en">
     <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
     <meta name="description" content="Ionic Calendar Demo">
     <title>Ionic Calendar Demo</title>
     <link rel="stylesheet" href="http://code.ionicframework.com/1.1.1/css/ionic.min.css"/>
@@ -9,6 +11,8 @@
     <script src="http://code.ionicframework.com/1.1.1/js/ionic.bundle.min.js"></script>
     <script src="../dist/js/calendar-tpls.js"></script>
     <script src="calendarDemoCtrl.js"></script>
+    <script src="date.js"></script>
+    <script src="lodash.min.js"></script>
 </head>
 <body>
 <ion-nav-bar class="bar-positive" align-title="left">
@@ -28,8 +32,8 @@
             <ion-nav-view name="about-tab"></ion-nav-view>
         </ion-tab>
 
-        <ion-tab title="Contact" icon="ion-ios-world" ui-sref="tabs.contact">
-            <ion-nav-view name="contact-tab"></ion-nav-view>
+        <ion-tab title="People" icon="ion-ios-world" ui-sref="tabs.people">
+            <ion-nav-view name="people-tab"></ion-nav-view>
         </ion-tab>
     </ion-tabs>
 </script>
@@ -37,7 +41,7 @@
 <script id="templates/home.html" type="text/ng-template">
     <ion-view view-title={{viewTitle}}>
         <ion-nav-buttons side="right">
-            <button class="button" ng-disabled="isToday()" ng-click="today()">Today</button>
+            <button class="button" ng-disabled="isToday()" ng-click="today('clicked')">Today</button>
             <button class="button" ng-click="changeMode('month')">M</button>
             <button class="button" ng-click="changeMode('week')">W</button>
             <button class="button" ng-click="changeMode('day')">D</button>
@@ -61,16 +65,18 @@
     </ion-view>
 </script>
 
-<script id="templates/contact.html" type="text/ng-template">
-    <ion-view title="Contact">
+<script id="templates/people.html" type="text/ng-template">
+    <ion-view title="People">
         <ion-content>
+        <input type="text" ng-model="totleEvents.search" class="search" id="projects_search"
+       placeholder="Search">
             <div class="list">
-                <div class="item">
-                    @IonicFramework
+                <div  ng-repeat="people in uniPeople() | filter:totleEvents.search" class="item">
+                   <span ng-click="showDates(people.title)">{{ people.title}} ({{countMyDays(people.title)}})</span>
+                    
+                   <div ng-show="isActiveDates(people.title)" ng-click="showMyDate(date.startTime)" ng-repeat="date in comnPeople(people.title)"> {{ date.startTime | date  }}</div>
                 </div>
-                <div class="item">
-                    @DriftyTeam
-                </div>
+                
             </div>
         </ion-content>
     </ion-view>

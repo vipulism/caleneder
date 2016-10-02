@@ -612,6 +612,8 @@ angular.module('ui.rCalendar', [])
                         var eventSet;
                         while (index < timeDifferenceEnd - eps) {
                             dates[index].hasEvent = true;
+                            dates[index].hasEvent = true;
+
                             eventSet = dates[index].events;
                             if (eventSet) {
                                 eventSet.push(event);
